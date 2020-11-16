@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+   dbmysql:
+          image: mysql/mysql-server
+          volumes:
+            - /db_data:/var/lib/mysql
+          restart: always
+          environment: 
+            MYSQL_ROOT_PASSWORD: 123
+            MYSQL_DATABASE: orderapi  
+            MYSQL_USER: root 
+            MYSQL_PASSWORD: 123
