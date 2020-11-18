@@ -1,23 +1,31 @@
-version: "3"
+version: "3.5"
 services:
    dbmysql:
-          image: mysql/mysql-server
+          image: mysql/mysql-server:5.7.31
           environment: 
-            - MYSQL_USER=root
-            - MYSQL_PASSWORD=123
-            - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+            - MYSQL_ROOT_HOST=%
+            - MYSQL_ROOT_PASSWORD=123
             - MYSQL_DATABASE=orderapi
-          ports: 
-            - "3306:3306"
-          volumes:
-            - /db_data:/var/lib/mysql
+          networks:
+            - net-backend            
+          expose:
+            - "3306"  
    order-api:        
           image: orderapi
-          restart: on-failure
-          links:
-            - "dbmysql:dbmysql"
           depends_on:
-            dbmysql:
-              condition: service_healthy
+            - dbmysql
           ports:
-            - "8080:8080"
+            - 8080:8080
+          networks:
+            - net-backend            
+          environment: 
+             DATABASE_HOST: dbmysql
+             DATABASE_USER: root
+             DATABASE_NAME: orderapi
+             DATABASE_PORT: 3306 
+
+networks:
+  net-backend:
+
+
+
