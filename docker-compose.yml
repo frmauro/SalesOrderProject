@@ -60,6 +60,15 @@ services:
             - 8086:80
           networks:
             - net-backend            
+   web-product:        
+          image: salesproductfrontend
+          restart: on-failure
+          depends_on:
+            - product-api
+          ports:
+            - 8085:80
+          networks:
+            - net-backend            
 
 
 networks:
