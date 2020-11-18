@@ -12,6 +12,7 @@ services:
             - "3306"  
    order-api:        
           image: orderapi
+          restart: on-failure
           depends_on:
             - dbmysql
           ports:
@@ -23,6 +24,7 @@ services:
              DATABASE_USER: root
              DATABASE_NAME: orderapi
              DATABASE_PORT: 3306 
+
 
 networks:
   net-backend:
