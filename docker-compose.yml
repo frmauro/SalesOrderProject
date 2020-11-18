@@ -10,6 +10,16 @@ services:
             - net-backend            
           expose:
             - "3306"  
+   dbmysqlproduct:
+          image: mysql/mysql-server:5.7.31
+          environment: 
+            - MYSQL_ROOT_HOST=%
+            - MYSQL_ROOT_PASSWORD=123
+            - MYSQL_DATABASE=productApi
+          networks:
+            - net-backend            
+          expose:
+            - "3306"  
    order-api:        
           image: orderapi
           restart: on-failure
@@ -25,6 +35,20 @@ services:
              DATABASE_NAME: orderapi
              DATABASE_PORT: 3306 
 
+   product-api:        
+          image: salesproductapi
+          restart: on-failure
+          depends_on:
+            - dbmysqlproduct
+          ports:
+            - 8087:80
+          networks:
+            - net-backend            
+          environment: 
+             DATABASE_HOST: dbmysqlproduct
+             DATABASE_USER: root
+             DATABASE_NAME: productApi
+             DATABASE_PORT: 3306 
 
 networks:
   net-backend:
