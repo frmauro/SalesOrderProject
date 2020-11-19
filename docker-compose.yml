@@ -20,6 +20,14 @@ services:
             - net-backend            
           expose:
             - "3306"  
+   dbmongouser:
+          image: mongo
+          networks:
+            - net-backend  
+          ports:
+            - "27017:27017"                      
+          expose:
+            - "27017"  
    order-api:        
           image: orderapi
           restart: on-failure
@@ -34,7 +42,6 @@ services:
              DATABASE_USER: root
              DATABASE_NAME: orderapi
              DATABASE_PORT: 3306 
-
    product-api:        
           image: salesproductapi
           restart: on-failure
@@ -49,7 +56,15 @@ services:
              DATABASE_USER: root
              DATABASE_NAME: productApi
              DATABASE_PORT: 3306 
-
+   user-api:        
+          image: salesproductapi
+          restart: on-failure
+          depends_on:
+            - dbmongouser
+          ports:
+            - 8088:8088
+          networks:
+            - net-backend            
    web-order:        
           image: salesorderfrontend
           restart: on-failure
