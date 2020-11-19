@@ -57,7 +57,7 @@ services:
              DATABASE_NAME: productApi
              DATABASE_PORT: 3306 
    user-api:        
-          image: salesproductapi
+          image: salesapiusernode
           restart: on-failure
           depends_on:
             - dbmongouser
