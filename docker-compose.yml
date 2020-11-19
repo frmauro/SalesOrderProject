@@ -84,7 +84,15 @@ services:
             - 8085:80
           networks:
             - net-backend            
-
+   web-user:        
+          image: salesuserreact
+          restart: on-failure
+          depends_on:
+            - user-api
+          ports:
+            - 3000:3000
+          networks:
+            - net-backend            
 
 networks:
   net-backend:
