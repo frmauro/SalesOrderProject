@@ -19,7 +19,7 @@ services:
           networks:
             - net-backend            
           expose:
-            - "3306"  
+            - "3307"  
    dbmongouser:
           image: mongo
           networks:
