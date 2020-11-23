@@ -55,7 +55,7 @@ services:
              DATABASE_HOST: dbmysqlproduct
              DATABASE_USER: root
              DATABASE_NAME: productApi
-             DATABASE_PORT: 3306 
+             DATABASE_PORT: 3307 
    user-api:        
           image: salesapiusernode
           restart: on-failure
