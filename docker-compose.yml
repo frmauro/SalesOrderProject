@@ -10,6 +10,13 @@ services:
             - net-backend            
           expose:
             - "3306"  
+   dbsqlserver:
+          image: "mcr.microsoft.com/mssql/server:2019-latest"
+          networks:
+            - net-backend            
+          environment:
+            SA_PASSWORD: "Mau123&&&"
+            ACCEPT_EULA: "Y"            
    dbmongouser:
           image: mongo
           networks:
@@ -36,16 +43,16 @@ services:
           image: salesproductapi
           restart: on-failure
           depends_on:
-            - dbmysql
+            - dbsqlserver
           ports:
             - 8087:80
           networks:
             - net-backend            
           environment: 
-             DATABASE_HOST: dbmysql
-             DATABASE_USER: root
+             DATABASE_HOST: dbsqlserver
+             DATABASE_USER: sa
              DATABASE_NAME: productApi
-             DATABASE_PORT: 3306 
+             DATABASE_PORT: 1433 
    user-api:        
           image: salesapiusernode
           restart: on-failure
