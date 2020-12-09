@@ -87,15 +87,12 @@ services:
           build:
             context: ../../reactjs/salesuser/
             dockerfile: Dockerfile
-          stdin_open: true  
           depends_on:
             - user-api
           ports:
             - 3000:3000
           networks:
             - net-backend
-          environment:
-            - NODE_ENV=development                        
 
 networks:
   net-backend:
