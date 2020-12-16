@@ -1,15 +1,17 @@
 version: "3.5"
 services:
-   #dbmysql:
-          #image: mysql/mysql-server:5.7.31
-          #environment: 
-          #  - MYSQL_ROOT_HOST=%
-          #  - MYSQL_ROOT_PASSWORD=123
-          #  - MYSQL_DATABASE=orderapi
-          #networks:
-           # - net-backend            
-          #expose:
-           # - "3306"  
+   dbmysql:
+          image: mysql/mysql-server:5.7.31
+          environment: 
+            - MYSQL_ROOT_HOST=%
+            - MYSQL_ROOT_PASSWORD=123
+            - MYSQL_DATABASE=orderapi
+          volumes:
+            - mysqlvolume:/var/lib/mysql            
+          networks:
+            - net-backend            
+          expose:
+            - "3306"  
    dbsqlserver:
           image: "mcr.microsoft.com/mssql/server:2019-latest"
           networks:
@@ -21,30 +23,30 @@ services:
             - "1433:1433"            
           volumes: 
             - sqldata:/var/opt/mssql                       
-   #dbmongouser:
-    #      image: mongo
-    #      networks:
-    #        - net-backend  
-    #      ports:
-    #        - "27017:27017"
-    #      volumes:
-    #        - /mongo_data:/data/db
-    #      expose:
-    #        - "27017"  
-   #order-api:        
-    #      image: orderapi
-    #      restart: on-failure
-    #      depends_on:
-    #        - dbmysql
-    #      ports:
-    #        - 8080:8080
-    #      networks:
-    #        - net-backend            
-    #      environment: 
-    #         DATABASE_HOST: dbmysql
-    #         DATABASE_USER: root
-    #         DATABASE_NAME: orderapi
-    #         DATABASE_PORT: 3306 
+   dbmongouser:
+          image: mongo
+          networks:
+            - net-backend  
+          ports:
+            - "27017:27017"
+          volumes:
+            - /mongo_data:/data/db
+          expose:
+            - "27017"  
+   order-api:        
+          image: orderapi
+          restart: on-failure
+          depends_on:
+            - dbmysql
+          ports:
+            - 8080:8080
+          networks:
+            - net-backend            
+          environment: 
+             DATABASE_HOST: dbmysql
+             DATABASE_USER: root
+             DATABASE_NAME: orderapi
+             DATABASE_PORT: 3306 
    product-api:        
           image: salesproductapi
           restart: on-failure
@@ -59,34 +61,34 @@ services:
              DATABASE_USER: sa
              DATABASE_NAME: productApi
              DATABASE_PORT: 1433 
-   #user-api:        
-    #      image: salesapiusernode
-    #      restart: on-failure
-    #      depends_on:
-    #        - dbmongouser
-    #      ports:
-    #        - 8088:8088
-    #      networks:
-    #        - net-backend            
-   #web-order:        
-    #      image: salesorderfrontend
-    #      restart: on-failure
-    #      depends_on:
-    #        - order-api
-    #        - product-api
-    #      ports:
-    #        - 8086:80
-    #      networks:
-    #        - net-backend            
-   web-product:        
-          image: salesproductfrontend
+   user-api:        
+          image: salesapiusernode
           restart: on-failure
           depends_on:
-            - product-api
+            - dbmongouser
           ports:
-            - 8085:80
+            - 8088:8088
           networks:
             - net-backend            
+   web-order:        
+          image: salesorderfrontend
+          restart: on-failure
+          depends_on:
+            - order-api
+            - product-api
+          ports:
+            - 8086:80
+          networks:
+            - net-backend            
+   #web-product:        
+    #      image: salesproductfrontend
+    #      restart: on-failure
+    #      depends_on:
+    #        - product-api
+    #      ports:
+    #        - 8085:80
+    #      networks:
+    #        - net-backend            
    #web-user:        
     #      image: salesuserreact
     #      restart: on-failure
@@ -101,7 +103,8 @@ services:
     #        - net-backend
 volumes:
   mongo_data:
-  sqldata:    
+  sqldata: 
+  mysqlvolume:   
 networks:
   net-backend:
 
