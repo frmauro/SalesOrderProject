@@ -47,6 +47,20 @@ services:
              DATABASE_USER: root
              DATABASE_NAME: orderapi
              DATABASE_PORT: 3306 
+   order-api02:        
+          image: orderapi
+          restart: on-failure
+          depends_on:
+            - dbmysql
+          ports:
+            - 8081:8080
+          networks:
+            - net-backend            
+          environment: 
+             DATABASE_HOST: dbmysql
+             DATABASE_USER: root
+             DATABASE_NAME: orderapi
+             DATABASE_PORT: 3306 
    product-api:        
           image: salesproductapi
           restart: on-failure
@@ -70,16 +84,26 @@ services:
             - 8088:8088
           networks:
             - net-backend            
-   web-order:        
-          image: salesorderfrontend
+   loadbalancerordersales:        
+          image: loadbalancerordersales
           restart: on-failure
           depends_on:
             - order-api
-            - product-api
+            - order-api02
           ports:
-            - 8086:80
+            - 8070:80
           networks:
             - net-backend            
+  #  web-order:        
+  #         image: salesorderfrontend
+  #         restart: on-failure
+  #         depends_on:
+  #           - order-api
+  #           - product-api
+  #         ports:
+  #           - 8086:80
+  #         networks:
+  #           - net-backend            
    #web-product:        
     #      image: salesproductfrontend
     #      restart: on-failure
@@ -89,18 +113,18 @@ services:
     #        - 8085:80
     #      networks:
     #        - net-backend            
-   #web-user:        
-    #      image: salesuserreact
-    #      restart: on-failure
-    #      build:
-    #        context: ../../reactjs/salesuser/
-    #        dockerfile: Dockerfile
-    #      depends_on:
-    #        - user-api
-    #      ports:
-    #        - 3000:3000
-    #      networks:
-    #        - net-backend
+  #  web-user:        
+  #         image: salesuserreact
+  #         restart: on-failure
+  #         build:
+  #           context: ../../reactjs/salesuser/
+  #           dockerfile: Dockerfile
+  #         depends_on:
+  #           - user-api
+  #         ports:
+  #           - 3000:3000
+  #         networks:
+  #           - net-backend
 volumes:
   mongo_data:
   sqldata: 
