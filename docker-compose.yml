@@ -94,16 +94,16 @@ services:
             - 8070:80
           networks:
             - net-backend            
-  #  web-order:        
-  #         image: salesorderfrontend
-  #         restart: on-failure
-  #         depends_on:
-  #           - order-api
+   web-order:        
+           image: salesorderfrontend
+           restart: on-failure
+           depends_on:
+             - loadbalancerordersales
   #           - product-api
-  #         ports:
-  #           - 8086:80
-  #         networks:
-  #           - net-backend            
+           ports:
+             - 8086:80
+           networks:
+             - net-backend            
    #web-product:        
     #      image: salesproductfrontend
     #      restart: on-failure
