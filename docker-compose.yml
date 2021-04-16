@@ -88,16 +88,16 @@ services:
             - 8088:8088
           networks:
             - net-backend            
-  #  loadbalancerordersales:        
-  #         image: loadbalancerordersales
-  #         restart: on-failure
-  #         depends_on:
-  #           - order-api
-  #           - order-api02
-  #         ports:
-  #           - 8070:80
-  #         networks:
-  #           - net-backend            
+   loadbalancerordersales:        
+          image: loadbalancerordersales
+          restart: on-failure
+          depends_on:
+            - order-api
+            - order-api02
+          ports:
+            - 8070:80
+          networks:
+            - net-backend            
   #  web-order:        
   #          image: salesorderfrontend
   #          restart: on-failure
