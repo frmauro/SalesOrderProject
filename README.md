@@ -1,2 +1,3 @@
-docker-compose up
-docker-compose kill
+sudo docker-compose up
+sudo docker-compose down
+sudo docker-compose kill
