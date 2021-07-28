@@ -65,29 +65,31 @@ services:
   #            DATABASE_USER: root
   #            DATABASE_NAME: orderapi
   #            DATABASE_PORT: 3306 
-  #  product-api:        
-  #         image: salesproductapi
-  #         restart: on-failure
-  #         depends_on:
-  #           - dbsqlserver
-  #         ports:
-  #           - 8087:80
-  #         networks:
-  #           - net-backend            
-  #         environment: 
-  #            DATABASE_HOST: dbsqlserver
-  #            DATABASE_USER: sa
-  #            DATABASE_NAME: productApi
-  #            DATABASE_PORT: 1433 
-  #  user-api:        
-  #         image: salesapiusernode
-  #         restart: on-failure
-  #         depends_on:
-  #           - dbmongouser
-  #         ports:
-  #           - 8088:8088
-  #         networks:
-  #           - net-backend            
+   product-api:        
+          image: salesproductapi
+          restart: on-failure
+          depends_on:
+            - dbsqlserver
+          ports:
+            - 8087:4999
+            - 9090:9090
+          networks:
+            - net-backend            
+          environment: 
+             DATABASE_HOST: dbsqlserver
+             DATABASE_USER: sa
+             DATABASE_NAME: productApi
+             DATABASE_PORT: 1433 
+   user-api:        
+          image: salesapiusernode
+          restart: on-failure
+          depends_on:
+            - dbmongouser
+          ports:
+            - 8088:8088
+            - 50051:50051
+          networks:
+            - net-backend            
   #  loadbalancerordersales:        
   #         image: loadbalancerordersales
   #         restart: on-failure
